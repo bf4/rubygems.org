@@ -38,6 +38,7 @@ gem 'validates_formatting_of'
 gem 'will_paginate'
 gem 'xml-simple'
 gem 'yajl-ruby', require: 'yajl'
+gem 'doorkeeper'
 
 group :development, :test do
   gem 'rubocop', '~> 0.33.0'
