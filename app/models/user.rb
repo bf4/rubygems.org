@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_many :subscriptions
   has_many :web_hooks
 
+  has_many :oauth_applications, class_name: 'Doorkeeper::Application', as: :owner
+
   before_validation :regenerate_token, if: :email_changed?, on: :update
   before_create :generate_api_key
 
