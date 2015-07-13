@@ -3,7 +3,8 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    @user = env[:clearance].current_user
+    clearance_session = env[:clearance] #  session = Clearance::Session.new(env)
+    @user = clearance_session && clearance_session.current_user
 
     if @user
       @user
