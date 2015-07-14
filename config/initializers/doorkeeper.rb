@@ -15,5 +15,4 @@ Doorkeeper.configure do
   end
 
   enable_application_owner confirmation: false
-
 end

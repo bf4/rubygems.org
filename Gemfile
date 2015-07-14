@@ -43,11 +43,13 @@ gem 'doorkeeper'
 group :development, :test do
   gem 'rubocop', '~> 0.33.0'
   gem 'toxiproxy', '~> 0.1.3'
+  gem "oauth2"
 end
 
 group :development do
   gem 'quiet_assets'
   gem 'rails-erd'
+  gem "m"
 end
 
 group :test do
