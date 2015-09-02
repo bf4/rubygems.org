@@ -2,8 +2,9 @@ Doorkeeper.configure do
   orm :active_record
 
   # This block will be called to check whether the resource owner is authenticated or not.
+  # called in the AuthorizedApplicationsController by `before_action :authenticate_resource_owner!`
   resource_owner_authenticator do
-    clearance_session = env[:clearance] #  session = Clearance::Session.new(env)
+    clearance_session = env[:clearance] # session = Clearance::Session.new(env)
     @user = clearance_session && clearance_session.current_user
 
     if @user
@@ -14,5 +15,29 @@ Doorkeeper.configure do
     end
   end
 
+  # Restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
+  # called in the ApplicationsController by `before_action :authenticate_admin!`
+  admin_authenticator do
+    authenticate_resource_owner!
+  end
+
+  use_refresh_token
+
   enable_application_owner confirmation: false
+
+  default_scopes  :public
+
+  access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param
+
+  native_redirect_uri 'urn:ietf:wg:oauth:2.0:oob'
+
+  # Forces the usage of the HTTPS protocol in non-native redirect uris.
+  # OAuth2 delegates security in communication to the HTTPS protocol so it is wise to keep this enabled.
+  force_ssl_in_redirect_uri !Rails.env.development?
+
+  # implicit and password grant flows have risks that you should understand before enabling:
+  #   http://tools.ietf.org/html/rfc6819#section-4.4.2
+  #   http://tools.ietf.org/html/rfc6819#section-4.4.3
+  #
+  grant_flows %w(authorization_code)
 end

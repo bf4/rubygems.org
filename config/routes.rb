@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  use_doorkeeper do
-    skip_controllers :applications, :authorized_applications
+  use_doorkeeper scope: 'oauth' do
+    controllers applications: 'oauth/applications'
   end
+
   ################################################################################
   # Root
 
